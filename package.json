@@ -1,19 +1,23 @@
 {
-  "name": "pkg-placeholder",
+  "name": "wechat-mini-ci",
   "type": "module",
   "version": "0.0.0",
   "packageManager": "pnpm@10.2.1",
-  "description": "_description_",
-  "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+  "description": "CI for managing wechat miniprogram",
+  "author": "Johnson Huang <johnsonhuang0802@gmail.com>",
   "license": "MIT",
-  "funding": "https://github.com/sponsors/antfu",
-  "homepage": "https://github.com/antfu/pkg-placeholder#readme",
+  "homepage": "https://github.com/JohnsonHuang4396/miniprogram-ci#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antfu/pkg-placeholder.git"
+    "url": "git+https://github.com/JohnsonHuang4396/miniprogram-ci.git"
   },
-  "bugs": "https://github.com/antfu/pkg-placeholder/issues",
-  "keywords": [],
+  "bugs": "https://github.com/JohnsonHuang4396/miniprogram-ci/issues",
+  "keywords": [
+    "miniprogram",
+    "wechat",
+    "typescript",
+    "ci"
+  ],
   "sideEffects": false,
   "exports": {
     ".": "./dist/index.mjs"
@@ -35,6 +39,12 @@
     "typecheck": "tsc --noEmit",
     "prepare": "simple-git-hooks"
   },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "enquirer": "^2.4.1",
+    "execa": "^9.5.2",
+    "miniprogram-ci": "^2.0.10"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^4.1.1",
     "@antfu/ni": "^23.3.1",
@@ -43,7 +53,6 @@
     "bumpp": "^10.0.2",
     "eslint": "^9.20.0",
     "lint-staged": "^15.4.3",
-    "pnpm": "^10.2.1",
     "simple-git-hooks": "^2.11.1",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",

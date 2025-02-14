@@ -28,6 +28,10 @@ class Logger {
   warn(...args: any[]) {
     this.log(chalk.yellow('🔥 WARNING'), ...args)
   }
+
+  test(...args: any[]) {
+    this.log(chalk.gray('🧪 TEST'), ...args)
+  }
 }
 
 export const logger = new Logger()

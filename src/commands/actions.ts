@@ -24,11 +24,13 @@ export function actions({
 }: ActionsParams = {}) {
   return async (root: string, inlineConfig: InlineConfig = {}) => {
     const resolvedConfig = await resolveConfig({ root, ...inlineConfig })
+    const instanceList: Project[] = []
     for (const config of resolvedConfig) {
       if (!inlineConfig.dry) {
         try {
           const instance = new Project(config)
           await instance[action]()
+          instanceList.push(instance)
           logger.success(`小程序 ${instance.options?.appid ?? ''} ${chalk.green(`[${title}]`)} 成功`)
         }
         catch (e) {
@@ -50,5 +52,6 @@ export function actions({
         )
       }
     }
+    return instanceList
   }
 }

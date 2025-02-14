@@ -1,5 +1,5 @@
 {
-  "name": "wechat-mini-ci",
+  "name": "@johnsonhuang4396/wechat-mini-ci",
   "type": "module",
   "version": "0.0.0",
   "packageManager": "pnpm@10.2.1",

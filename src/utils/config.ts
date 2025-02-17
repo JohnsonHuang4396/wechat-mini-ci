@@ -1,10 +1,10 @@
 import { defaultConfigFileName, defaultConfigPath, defaultPackageJSONPath } from '@/constants'
-import { existsSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs'
-import { pathToFileURL } from 'node:url'
+import { existsSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs'
 import type { InlineConfig, IProjectOptions, TDefineConfig, TMixProjectInlineConfig } from '@/types'
-import { resolve } from 'node:path'
-import { isObject, readJSON, logger, getResolvedRoot, select, arrify } from '@/utils'
+import { dirname, join, resolve } from 'node:path'
+import { isObject, readJSON, logger, getResolvedRoot, select, arrify } from '.'
 import { execaCommandSync } from 'execa'
+import { transformSync } from 'esbuild'
 
 /**
  * @description 基于package.json获取版本号
@@ -85,10 +85,6 @@ export function getConfigFilePath(configDir: string) {
     break
   }
 
-  if (!resolvedPath) {
-    logger.warn('未检测到配置文件，使用默认配置')
-  }
-
   return resolvedPath
 }
 
@@ -96,55 +92,24 @@ export function getConfigFilePath(configDir: string) {
  * @description 获取配置文件内容
  */
 export async function getConfigFromFile(path = defaultConfigPath): Promise<TDefineConfig | undefined> {
-  let fileNameTmp: string = ''
+  const fileContent = readFileSync(path, 'utf-8')
+  const { code: jsCode } = transformSync(fileContent, {
+    loader: 'ts',
+    format: 'esm'
+  })
+  const tempFilePath = join(dirname(path), `temp-${Date.now()}.mjs`)
+  writeFileSync(tempFilePath, jsCode, 'utf-8')
   try {
-    let fileUrl = path
-    // 统一用 esm 处理
-    // 不是 mjs 结尾，生成临时的 mjs 来读取，读取完后删除
-    if (!/\.m?[tj]s$/.test(path)) {
-      const fileBase = `${path}.timestamp-${Date.now()}`
-      fileNameTmp = `${fileBase}.ts`
-      fileUrl = `${pathToFileURL(fileBase)}.ts`
-      const code = readFileSync(path, 'utf8')
-      writeFileSync(fileNameTmp, code, 'utf8')
+    const module = await import(tempFilePath)
+    let rawConfig = module.default || module
+    if (typeof rawConfig === 'function') {
+      rawConfig = await rawConfig()
     }
-
-    return (await import(fileUrl)).default
-  }
-  catch (e) {
-    logger.error(`加载配置文件 ${path} 失败`, e)
-    return
+    return rawConfig
   }
   finally {
-    try {
-      unlinkSync(fileNameTmp)
-    }
-    catch {
-    // already removed if this function is called twice simultaneously
-    }
+    unlinkSync(tempFilePath)
   }
-}
-
-export async function getConfigList(configPath: string) {
-  let configPathList: string[] = []
-  try {
-    configPathList = readdirSync(configPath)
-  }
-  catch (error) {
-    logger.error(error)
-    throw new Error('请设置小程序配置路径 configPath')
-  }
-  if (configPathList.length === 0) {
-    throw new Error('请设置小程序配置路径 configPath')
-  }
-
-  const configList: IProjectOptions[] = []
-  for (const path of configPathList) {
-    const config = await getConfigFromFile(`${configPath}/${path}`)
-    config && (Array.isArray(config) ? configList.push(...config) : configList.push(config))
-  }
-
-  return configList
 }
 
 export function mergeConfig(defaults: Record<string, any>, config: Record<string, any>) {
@@ -237,13 +202,20 @@ export async function loadConfig(configDir: string): Promise<TDefineConfig | und
 export async function resolveConfig(config: InlineConfig) {
   const resolvedRoot = getResolvedRoot(config)
   let loadResult: TDefineConfig | TDefineConfig[] | undefined
-  if (config.config)
-    loadResult = await getConfigFromFile(resolve(resolvedRoot, config.config))
-  else
-    loadResult = await loadConfig(resolvedRoot)
+  try {
+    if (config.config)
+      loadResult = await getConfigFromFile(resolve(resolvedRoot, config.config))
+    else
+      loadResult = await loadConfig(resolvedRoot)
 
-  if (!isObject(loadResult))
-    throw new Error('未发现配置项，请确保项目根目录下存在ci配置文件')
+    if (!isObject(loadResult)) {
+      throw new Error('请提供有效的配置文件路径或配置对象')
+    }
+  }
+  catch (e) {
+    logger.error(`加载配置失败 : ${e}`)
+    return
+  }
 
   let loadResultList: any[] = []
   // 单选或者多选

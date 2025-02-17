@@ -5,7 +5,7 @@ type TCreateProjectOptions = Omit<ICreateProjectOptions, 'type'>
 
 export interface IProjectOptions extends TCreateProjectOptions {
   name: string
-  version: string
+  version?: string
   type?: 'miniProgram'
   desc?: string
   configPath?: string

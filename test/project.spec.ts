@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { Project } from '../src'
 import ci from 'miniprogram-ci'
 import type { IProjectOptions } from '../src'
+import { Project } from '../src'
 
 const mockConfig: IProjectOptions = {
   name: 'test',

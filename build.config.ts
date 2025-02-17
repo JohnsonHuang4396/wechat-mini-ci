@@ -6,11 +6,13 @@ export default defineBuildConfig({
     inlineDependencies: true
   },
   entries: [
+    'src/cli',
     'src/index'
   ],
   alias: {
     '@': fileURLToPath(new URL('./src', import.meta.url))
   },
+  externals: ['vitest'],
   declaration: 'node16',
   clean: true
 })

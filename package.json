@@ -1,7 +1,7 @@
 {
   "name": "@johnsonhuang4396/wechat-mini-ci",
   "type": "module",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "CI for managing wechat miniprogram",
   "author": "Johnson Huang <johnsonhuang0802@gmail.com>",
   "license": "MIT",

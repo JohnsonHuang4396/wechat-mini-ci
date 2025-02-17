@@ -48,6 +48,7 @@ export class Project {
     }
     return await ci.preview({
       ...this._options.preview,
+      version: this._options.version!,
       project: this.instance,
       onProgressUpdate: this._onPreviewUpdate
     })
@@ -66,6 +67,7 @@ export class Project {
     }
     return await ci.upload({
       ...this._options.upload,
+      version: this._options.version!,
       project: this.instance,
       onProgressUpdate: this._onUploadUpdate
     })

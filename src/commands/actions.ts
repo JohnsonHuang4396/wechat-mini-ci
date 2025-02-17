@@ -42,13 +42,6 @@ export function actions({
             logger.error(`小程序 ${config.appid ?? ''} ${chalk.red(`[${title}]`)} 失败: ${e}`)
             exit(0)
           }
-          finally {
-            logger.info(
-              chalk.blue(`[${title}]`),
-              `小程序 ${config.appid} 配置: `,
-              JSON.stringify(config, null, 2)
-            )
-          }
         }
         else {
           logger.info(

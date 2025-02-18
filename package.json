@@ -6,12 +6,12 @@
   "description": "CI for managing wechat miniprogram",
   "author": "Johnson Huang <johnsonhuang0802@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/JohnsonHuang4396/miniprogram-ci#readme",
+  "homepage": "https://github.com/JohnsonHuang4396/wechat-mini-ci#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JohnsonHuang4396/miniprogram-ci.git"
+    "url": "git+https://github.com/JohnsonHuang4396/wechat-mini-ci.git"
   },
-  "bugs": "https://github.com/JohnsonHuang4396/miniprogram-ci/issues",
+  "bugs": "https://github.com/JohnsonHuang4396/wechat-mini-ci/issues",
   "keywords": [
     "miniprogram",
     "wechat",

@@ -2,8 +2,9 @@ import type { PathOrFileDescriptor } from 'node:fs'
 import { readFileSync } from 'node:fs'
 import { posix, resolve } from 'node:path'
 import os from 'node:os'
-import { cwd } from 'node:process'
+import { cwd, exit } from 'node:process'
 import type { InlineConfig } from '@/types'
+import { logger } from './logger'
 
 export const isObject = (val: any) => typeof val === 'object' && val !== null
 
@@ -39,5 +40,19 @@ export function readJSON(file: PathOrFileDescriptor) {
   }
   catch {
     throw new Error(`Failed to read JSON file: ${file}`)
+  }
+}
+
+export async function runner(method: (...params: any[]) => any, ...args: any[]) {
+  try {
+    await method(...args)
+    exit(0)
+  }
+  catch (e) {
+    logger.error(e)
+    exit(1)
+  }
+  finally {
+    exit(0)
   }
 }

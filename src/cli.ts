@@ -1,6 +1,6 @@
 import type { Command } from 'cac'
 import { cac } from 'cac'
-import { logger } from './utils'
+import { logger, runner } from './utils'
 import chalk from 'chalk'
 import { defaultConfigFileName } from './constants'
 import { version } from '../package.json'
@@ -14,19 +14,18 @@ function cliInlineOptions(cliInstance: Command) {
   return cliInstance
     .option('-r, --robot <robot>', '指定机器人，默认 1')
     .option('-c, --config <file>', '指定一个文件为配置文件')
-    .option('--mode <mode>', '指定模式，读取 .env.[mode] 配置文件')
-    .option('-s, --useSelect', '需配置 configPath 选择一个配置操作')
-    .option('-m, --useMultiSelect', '需配置 configPath 选择多个配置操作')
-    .option('-a, --useAllConfig', '需配置 configPath，所有配置批量操作')
+    .option('-s, --useSelect', '选择一个配置操作')
+    .option('-m, --useMultiSelect', '选择多个配置操作')
+    .option('-si, --silent', '静默模式')
 }
 
 const previewCommand = cli.command('preview [root]', '预览小程序').alias('p')
 
-cliInlineOptions(previewCommand).action(preview)
+cliInlineOptions(previewCommand).action(async (...args) => await runner(preview, ...args))
 
 const uploadCommand = cli.command('upload [root]', '上传小程序').alias('u')
 
-cliInlineOptions(uploadCommand).action(upload)
+cliInlineOptions(uploadCommand).action(async (...args) => await runner(upload, ...args))
 
 cli.help(() => {
   logger.info(

@@ -179,9 +179,8 @@ export function mergeConfig(defaults: Record<string, any>, config: Record<string
   return {
     ...projectOptions,
     upload,
-    preview
-    // plugins: config.plugins,
-    // id: uniqueId(),
+    preview,
+    plugins: config.plugins
   }
 }
 
@@ -217,23 +216,17 @@ export async function resolveConfig(config: InlineConfig) {
     return
   }
 
-  let loadResultList: any[] = []
-  // 单选或者多选
-  if (config.useSelect || config.useMultiSelect || config.useAllConfig) {
-    const allConfigList = arrify(loadResult)
-    if (config.useAllConfig) {
-      loadResultList = allConfigList
-    }
-    else {
-      loadResultList = await select({
-        configList: allConfigList,
-        useSelect: config.useSelect,
-        useMultiSelect: config.useMultiSelect
-      })
-    }
+  let loadResultList: TDefineConfig[] = []
+  const allConfigList = arrify(loadResult)
+  if (config.useSelect || config.useMultiSelect) {
+    loadResultList = await select({
+      configList: allConfigList,
+      useSelect: config.useSelect,
+      useMultiSelect: config.useMultiSelect
+    })
   }
   else {
-    loadResultList = arrify(loadResult)
+    loadResultList = allConfigList
   }
 
   return loadResultList.map<TMixProjectInlineConfig>((item) => {

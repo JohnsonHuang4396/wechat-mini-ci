@@ -2,7 +2,7 @@ import type { InlineConfig } from '@/types'
 import { logger, resolveConfig } from '@/utils'
 import chalk from 'chalk'
 import { Project } from '@/ci'
-import { exit } from 'node:process'
+import { invokePluginsFn, resolvePlugins } from '@/plugins'
 
 export enum ActionsEnum {
   preview = 'preview',
@@ -24,26 +24,23 @@ export function actions({
   title = ActionTitlesEnum.upload
 }: ActionsParams = {}) {
   return async (root: string, inlineConfig: InlineConfig = {}) => {
-    try {
-      const resolvedConfig = await resolveConfig({ root, ...inlineConfig })
-      if (!resolvedConfig || !resolvedConfig.length)
-        return
+    const resolvedConfig = await resolveConfig({ root, ...inlineConfig })
+    if (!resolvedConfig || !resolvedConfig.length)
+      return
 
-      const instanceList: Project[] = []
-      for (const config of resolvedConfig) {
+    const instanceList: Project[] = []
+    for await (const config of resolvedConfig) {
+      const { prev, post } = resolvePlugins(config)
+      try {
+        await invokePluginsFn(prev, config, action)
         if (!inlineConfig.dry) {
-          try {
-            const instance = new Project(config)
-            await instance[action]()
-            instanceList.push(instance)
+          const instance = new Project(config)
+          await instance[action]()
+          instanceList.push(instance)
+          if (!inlineConfig.silent)
             logger.success(`小程序 ${instance.options?.appid ?? ''} ${chalk.green(`[${title}]`)} 成功`)
-          }
-          catch (e) {
-            logger.error(`小程序 ${config.appid ?? ''} ${chalk.red(`[${title}]`)} 失败: ${e}`)
-            exit(0)
-          }
         }
-        else {
+        else if (!inlineConfig.silent) {
           logger.info(
             chalk.blue(`[${title}]`),
             `小程序 ${config.appid} 配置: `,
@@ -51,10 +48,13 @@ export function actions({
           )
         }
       }
-      return instanceList
+      catch (e) {
+        logger.error(`小程序 ${config.appid ?? ''} ${chalk.red(`[${title}]`)} 失败: ${e}`)
+      }
+      finally {
+        await invokePluginsFn(post, config, action)
+      }
     }
-    finally {
-      exit(0)
-    }
+    return instanceList
   }
 }

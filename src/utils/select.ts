@@ -44,7 +44,7 @@ export async function select(options: SelectOptions) {
   if (useMultiSelect) {
     const multiSelectPrompt = new MultiSelect({
       name: 'value',
-      message: '可选择多个小程序配置',
+      message: '可选择多个小程序配置，最多可选择7个',
       limit: 7,
       choices: configList
     })

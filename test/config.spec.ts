@@ -1,7 +1,8 @@
+import { join } from 'node:path'
 import { getConfigFilePath, loadConfig, resolveConfig } from '../src/utils'
 import { describe, expect, it } from 'vitest'
 
-const configDir = './test/project'
+const configDir = join(__dirname, '../example')
 
 describe('load config', () => {
   it('获取项目路径下的配置文件路径', () => {

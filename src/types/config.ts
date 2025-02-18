@@ -1,5 +1,6 @@
 import type { ICreateProjectOptions } from 'miniprogram-ci/dist/@types/ci/project'
 import type { IPreviewOptions, IUploadOptions } from './project'
+import type { Plugin } from './plugins'
 
 type TCreateProjectOptions = Omit<ICreateProjectOptions, 'type'>
 
@@ -10,6 +11,7 @@ export interface IProjectOptions extends TCreateProjectOptions {
   desc?: string
   configPath?: string
   packageJsonPath?: string
+  plugins?: Plugin[]
   preview?: IPreviewOptions
   upload?: IUploadOptions
 }
@@ -25,10 +27,8 @@ export interface InlineConfig {
   useSelect?: boolean
   robot?: number
   dry?: boolean
-  useAllConfig?: boolean
-  // 指定配置文件
   config?: string
-  mode?: string
+  silent?: boolean
 }
 
 export type TMixProjectInlineConfig = IProjectOptions & InlineConfig

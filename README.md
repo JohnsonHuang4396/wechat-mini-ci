@@ -14,6 +14,14 @@
 ![NPM Downloads](https://img.shields.io/npm/dm/%40johnsonhuang4396%2Fwechat-mini-ci)
 
 ## 如何使用：
+```bash
+npm i -D @johnsonhuang4396/wechat-mini-ci
+
+npm i -g @johnsonhuang4396/wechat-mini-ci #全局安装使用
+
+npx @johnsonhuang4396/wechat-mini-ci [command] #也可以不安装直接使用，可以确保使用最新版本
+```
+
 你可以通过命令行调用`wechat-mini-ci`，也可以通过脚本形式调用导出的`preview`和`upload`函数
 
 `preview`和`upload`函数均已内置初始化功能，你不需要自行初始化。但如果有自定义的需求，可以通过调用`Project`并传入配置项来进行自定义操作👇：
@@ -54,9 +62,9 @@ export default defineConfig({
 ```
 
 然后在项目的根目录下打开终端，输入如下指令，即可实现上传、预览：
-```
-wmc p 预览
-wmc u 上传
+```bash
+wmc p #预览
+wmc u #上传
 ```
 
 如果你有多个小程序管理的需求，`defineConfig`也支持传入数组：
@@ -78,10 +86,10 @@ export default defineConfig([
 ```
 
 然后在项目的根目录下打开终端，可以选择操作一个、多个小程序：
-```
-wmc p 默认情况下为全量预览
-wmc p -s 选择一个小程序进行预览
-wmc p -m 选择多个小程序进行预览
+```bash
+wmc p #默认情况下为全量预览
+wmc p -s #选择一个小程序进行预览
+wmc p -m #选择多个小程序进行预览
 ```
 
 除了`wmc`外，你还可以使用如下命令来调用👇 **（使用前请确保没有重复的命令）**：

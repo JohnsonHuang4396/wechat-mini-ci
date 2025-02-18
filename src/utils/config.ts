@@ -93,8 +93,9 @@ export function getConfigFilePath(configDir: string) {
  */
 export async function getConfigFromFile(path = defaultConfigPath): Promise<TDefineConfig | undefined> {
   const fileContent = readFileSync(path, 'utf-8')
+  const isTSFile = !!((path.endsWith('.ts') || path.endsWith('.mts')))
   const { code: jsCode } = transformSync(fileContent, {
-    loader: 'ts',
+    loader: isTSFile ? 'ts' : 'js',
     format: 'esm'
   })
   const tempFilePath = join(dirname(path), `temp-${Date.now()}.mjs`)

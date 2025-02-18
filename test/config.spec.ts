@@ -4,6 +4,8 @@ import { describe, expect, it } from 'vitest'
 
 const configDir = join(__dirname, '../example')
 
+const projectRoot = join(__dirname, '../test/project')
+
 describe('load config', () => {
   it('获取项目路径下的配置文件路径', () => {
     const filepath = getConfigFilePath(configDir)
@@ -15,10 +17,27 @@ describe('load config', () => {
     expect(config).toBeTypeOf('object')
   })
 
-  it('获取所有项目配置，并整合位数组', async () => {
+  it('获取指定配置文件的配置 js', async () => {
     const list = await resolveConfig({
-      root: configDir
+      root: projectRoot,
+      config: '../../example/ci.config.js'
     })
-    expect(list).toBeInstanceOf(Array)
+    expect(list).toHaveLength(1)
+  })
+
+  it('获取指定配置文件的配置 ts', async () => {
+    const list = await resolveConfig({
+      root: projectRoot,
+      config: '../../example/ci.config.ts'
+    })
+    expect(list).toHaveLength(1)
+  })
+
+  it('获取指定配置文件的配置 mts', async () => {
+    const list = await resolveConfig({
+      root: projectRoot,
+      config: '../../example/ci.config.mts'
+    })
+    expect(list).toHaveLength(1)
   })
 })

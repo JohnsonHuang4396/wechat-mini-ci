@@ -15,7 +15,7 @@ function run() {
 }
 
 describe('plugin', () => {
-  it('build-in print-qrcode plugin', { skip: true }, async () => {
+  it('build-in print-qrcode plugin', async () => {
     expect(await printQRcodeFn({ appid: '123', name: 'test' })).toBeTypeOf('string')
   })
 

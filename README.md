@@ -1,5 +1,7 @@
 # wechat-mini-ci
 
+[English](./README2.md) | 简体中文
+
 微信小程序上传、预览一步搞定，告别手写发布脚本
 
 > 本项目灵感来源若川大佬的[mini-ci](https://github.com/ruochuan12/mini-ci)，感谢前辈的贡献

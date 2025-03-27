@@ -1,8 +1,8 @@
 {
   "name": "@johnsonhuang4396/wechat-mini-ci",
   "type": "module",
-  "version": "1.0.4",
-  "packageManager": "pnpm@10.4.1",
+  "version": "1.0.5",
+  "packageManager": "pnpm@10.7.0",
   "description": "CI for managing wechat miniprogram",
   "author": "Johnson Huang <johnsonhuang0802@gmail.com>",
   "license": "MIT",
@@ -51,24 +51,24 @@
     "cac": "^6.7.14",
     "chalk": "^5.4.1",
     "enquirer": "^2.4.1",
-    "esbuild": "^0.25.0",
+    "esbuild": "^0.25.1",
     "execa": "^9.5.2",
     "miniprogram-ci": "^2.0.10",
     "qrcode": "^1.5.4"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.2.1",
-    "@antfu/ni": "^23.3.1",
-    "@antfu/utils": "^8.1.0",
-    "@types/node": "^22.13.4",
+    "@antfu/eslint-config": "^4.11.0",
+    "@antfu/ni": "^24.3.0",
+    "@antfu/utils": "^9.1.0",
+    "@types/node": "^22.13.14",
     "@types/qrcode": "^1.5.5",
-    "bumpp": "^10.0.3",
-    "eslint": "^9.20.1",
-    "lint-staged": "^15.4.3",
-    "simple-git-hooks": "^2.11.1",
-    "typescript": "^5.7.3",
-    "unbuild": "^3.3.1",
-    "vitest": "^3.0.5"
+    "bumpp": "^10.1.0",
+    "eslint": "^9.23.0",
+    "lint-staged": "^15.5.0",
+    "simple-git-hooks": "^2.12.1",
+    "typescript": "^5.8.2",
+    "unbuild": "^3.5.0",
+    "vitest": "^3.0.9"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"
